@@ -122,7 +122,7 @@ class InputFilter
 				$val = filter_var($val, $options);
 			}
 
-			if(!$val)
+			if($val === false)
 			{
 				$this->errors[$key] = $errorMessage;
 				break;
