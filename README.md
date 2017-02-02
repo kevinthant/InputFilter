@@ -30,8 +30,12 @@ $sanitizer->setInputs($inputs)
           //you can also filter a field by multiple filters in sequence
           ->filter('field3', array(
               FILTER_SANITIZE_STRING,
-              FILTER_VALIDATE_URL
-          ))
+              FILTER_VALIDATE_REGEXP => [
+                'options' => array(
+                  'regexp' => '=^([0-9]{3})\-?([0-9]{3})\-?([0-9]{4})$='
+                )
+              ]
+          ), 'Must be a valid US phone number')
           ->sanitize();
           
 if($sanitizer->hasErrors())
