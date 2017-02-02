@@ -13,7 +13,7 @@ use Thant\Helpers\InputFilter;
 $inputs = array(
             'field1' => ' 100 ',
             'field2' => 'kevin@gmail.com',
-            'field3' => 'New York'
+            'field3' => '4400-129-2210'
           );
                           
 $sanitizer = new InputFilter();
