@@ -50,7 +50,7 @@ How to write your own customer filter?
 ======================================
 
 To use your own customer filter, you will be using PHP filter constant called "FILTER_CALLBACK" and then you can supply a callback function array. 
-Currently there is a customer filter called DateTimeFilterCallback which implements IFilterCallback interface.
+Currently there is a customer filter called DateTimeFilterCallback which implements IFilterCallback interface. Please take a look at the class as an example on how to implement your own custom filter.
  
 Example code usage with custom filter:
 
