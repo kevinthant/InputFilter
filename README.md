@@ -1,4 +1,4 @@
-A tiny PHP libary for input filtering and validation that can be used across with any framework or application. It uses the PHP native filters for filtering and validationm see more information on available list of PHP native filters:
+A tiny PHP libary for input filtering and validation that can be used across with any framework or application. It uses the PHP native filters for filtering and validation. See more information on available list of PHP native filters:
 
 http://php.net/manual/en/filter.filters.php
 
