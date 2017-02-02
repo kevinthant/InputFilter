@@ -53,8 +53,24 @@ How to write your own customer filter?
 ======================================
 
 To use your own customer filter, you will be using PHP filter constant called "FILTER_CALLBACK" and then you can supply a callback function array. 
-Currently there is a customer filter called DateTimeFilterCallback which implements IFilterCallback interface. Please take a look at the class as an example on how to implement your own custom filter.
+Currently there is a customer filter called DateTimeFilterCallback which implements IFilterCallback interface. Please take a look at that class as an example on how to implement your own custom filter.
  
+Below is a bare-bone implementation of a custom filter callback class.
+```php
+<?php
+use Thant\Helpers\InputFilter\IFilterCallback;
+class MyCustomFilterCallback implements IFilterCallback
+{
+	
+	public function filter($val)
+	{
+		//return false if validation or filtering fails.
+		//Otherwise you can return a sanitized value back.
+	}
+
+}
+```
+
 Example code usage with custom filter:
 
 ```php
