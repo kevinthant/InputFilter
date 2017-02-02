@@ -27,8 +27,10 @@ $sanitizer->setInputs($inputs)
               FILTER_VALIDATE_EMAIL
           ), 'Valid email required')
           ->setRequired('field3', 'Field3 is required')
+          //you can also filter a field by multiple filters in sequence
           ->filter('field3', array(
-              FILTER_SANITIZE_STRING
+              FILTER_SANITIZE_STRING,
+              FILTER_VALIDATE_URL
           ))
           ->sanitize();
           
