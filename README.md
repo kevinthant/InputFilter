@@ -119,3 +119,22 @@ else
   $appointmentDate = $data['appointmentDate']; //should be '2017-06-01'
 }
 ```
+
+
+
+Custom Filter using anonymous function
+---------------------------------------
+
+```php
+$sanitizer = new InputFilter();
+$sanitizer->filter('field1', array(
+	FILTER_CALLBACK => [
+		'options' => function($val)
+		{
+			//TODO check the $val, return false if filtering/validation fails. Otherwise, return the sanitized value
+		}
+	]
+));
+```
+
+Example test case using anonymous function can also be found in the tests/InputFilterTest.php file.

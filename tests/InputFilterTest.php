@@ -84,4 +84,29 @@ class InputFilterTest extends PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey('field3', $data);
 		$this->assertEquals('New York', $data['field3']);
 	}
+
+	public function testCustomFilterWithAnonymousFunction()
+	{
+		$sanitizer = new InputFilter();
+		$sanitizer->setInputs(array(
+			'field1' => ' 100 '
+		))
+		          ->setRequired('field1')
+		          ->filter('field1', array(
+			          FILTER_VALIDATE_INT,
+			          FILTER_CALLBACK => [
+				          'options' => function ($val)
+				          {
+					          return $val >= 0 && $val <= 100 ? $val : false;
+				          }
+			          ]
+		          ))
+		          ->sanitize();
+
+		$this->assertFalse($sanitizer->hasErrors());
+		$data = $sanitizer->getClean();
+		$this->assertNotEmpty($data);
+		$this->assertArrayHasKey('field1', $data);
+		$this->assertEquals(100, $data['field1']);
+	}
 }
