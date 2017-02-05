@@ -106,6 +106,13 @@ class InputFilter
 		}
 
 		$val = $this->inputs[$key];
+
+		if(is_string($val) && $val == '' && array_key_exists($key, $this->required))
+		{
+			$this->errors[$key] = $this->required[$key];
+			return $this;
+		}
+
 		foreach($filters as $filter => $options)
 		{
 			if($options instanceof IFilterCallback)
