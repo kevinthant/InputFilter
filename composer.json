@@ -4,7 +4,7 @@
         "name": "Kevin Thant",
         "email": "kevinthant.nyc@gmail.com"
     }],
-    "require": {
+    "require-dev": {
         "phpunit/phpunit": "^5.7"
     },
     "autoload": {
