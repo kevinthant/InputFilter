@@ -24,7 +24,7 @@ class InputFilter
 	public function setInputs(array $data)
 	{
 		$this->inputs = $data;
-
+		$this->cleaned = array();
 		//trim for string values
 		foreach($this->inputs as $key => $val)
 		{
@@ -36,6 +36,14 @@ class InputFilter
 		}
 
 		return $this;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getInputs()
+	{
+		return $this->inputs;
 	}
 
 	/**
@@ -96,7 +104,14 @@ class InputFilter
 	 */
 	protected function _filter($key, array $filters, $errorMessage)
 	{
-		if(!array_key_exists($key, $this->inputs))
+		$val = $this->getValue($key, $this->inputs);
+
+		if(is_string($val) && trim($val) == '')
+		{
+			$val = false;
+		}
+
+		if($val === false)
 		{
 			if(array_key_exists($key, $this->required))
 			{
@@ -105,13 +120,6 @@ class InputFilter
 			return $this;
 		}
 
-		$val = $this->inputs[$key];
-
-		if(is_string($val) && $val == '' && array_key_exists($key, $this->required))
-		{
-			$this->errors[$key] = $this->required[$key];
-			return $this;
-		}
 
 		foreach($filters as $filter => $options)
 		{
@@ -135,8 +143,8 @@ class InputFilter
 				break;
 			}
 		}
-
-		$this->cleaned[$key] = $val;
+		$this->setValue($key, $val, $this->cleaned);
+		//$this->cleaned[$key] = $val;
 	}
 
 	/**
@@ -161,5 +169,57 @@ class InputFilter
 	public function hasErrors()
 	{
 		return !empty($this->errors);
+	}
+
+	protected function getValue($key, $inputs)
+	{
+		$pattern = '=^([\w\-]+)((\[[\w\-]+\])+)$=';
+
+		if(preg_match($pattern, $key, $matches))
+		{
+			$parent = $matches[1];
+
+			if(!array_key_exists($parent, $inputs))
+			{
+				return false;
+			}
+
+			$inputs = $inputs[$parent];
+			$key = preg_replace('=^\[([\w\-]+)\](.*)$=', '$1$2', $matches[2]);
+
+			return $this->getValue($key, $inputs);
+		}
+		elseif(!array_key_exists($key, $inputs))
+		{
+			return false;
+		}
+		else
+		{
+			return $inputs[$key];
+		}
+	}
+
+	protected function setValue($key, $value, &$data)
+	{
+		$pattern = '=^([\w\-]+)((\[[\w\-]+\])+)$=';
+
+		if(preg_match($pattern, $key, $matches))
+		{
+			$parent = $matches[1];
+
+			if(!array_key_exists($parent, $data))
+			{
+				$data[$parent] = array();
+			}
+
+
+			$key = preg_replace('=^\[([\w\-]+)\](.*)$=', '$1$2', $matches[2]);
+
+			return $this->setValue($key, $value, $data[$parent]);
+		}
+		else
+		{
+			$data[$key] = $value;
+		}
 	}
 }
